@@ -122,6 +122,18 @@
                 }
             });
 
+            // Function to periodically check and remove tasks older than 24 hours
+            function removeOldTasks() {
+                const currentTime = Date.now();
+                tasks = tasks.filter(task => (currentTime - task.timestamp) <= 24 * 60 * 60 * 1000);
+                saveTasks();
+                displayTasks();
+                updateCounts();
+            }
+
+            // Call removeOldTasks function every hour
+            setInterval(removeOldTasks, 60 * 60 * 1000);
+
             function saveTasks() {
                 localStorage.setItem("tasks", JSON.stringify(tasks));
             }
